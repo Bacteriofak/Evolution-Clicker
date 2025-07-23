@@ -1,0 +1,697 @@
+body {
+    font-family: "Inter", sans-serif;
+    touch-action: manipulation;
+    overscroll-behavior: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #1a202c;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 1s ease-in-out;
+}
+#video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+#background-video {
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    transition: opacity 1s ease-in-out;
+}
+
+#video-background::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
+main {
+}
+
+#central-content-wrapper {
+    transform: translateY(-100px);
+}
+
+.main-object {
+    transform-style: preserve-3d;
+    animation: float-wobble 8s ease-in-out infinite;
+    animation-play-state: running;
+    transition:
+        filter 0.3s ease-out,
+        box-shadow 0.3s ease-out;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.main-object.clicked {
+    filter: brightness(1.5);
+    box-shadow: 0 0 30px rgba(255, 255, 0, 0.8);
+    animation-play-state: paused;
+}
+.upgrade-button {
+    transition:
+        background-color 0.2s,
+        transform 1.6s,
+        box-shadow 0.2s;
+    min-width: 140px;
+}
+.upgrade-button:disabled {
+    background-color: #4b5563;
+    cursor: not-allowed;
+    opacity: 0.6;
+    filter: grayscale(70%);
+}
+.upgrade-button.affordable {
+    animation: pulse 1.5s infinite;
+    box-shadow: 0 0 15px rgba(250, 204, 21, 0.6);
+}
+.upgrade-button:not(:disabled):hover {
+    filter: brightness(1.1);
+}
+.upgrade-button:not(:disabled):active {
+    transform: scale(0.98);
+}
+.floating-text {
+    position: absolute;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #facc15;
+    pointer-events: none;
+    animation: float-up 1s ease-out forwards;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+    white-space: nowrap;
+    z-index: 50;
+}
+.floating-text.critical {
+    color: #ff0000;
+    font-size: 2rem;
+    animation: float-up-critical 1s ease-out forwards;
+}
+@keyframes float-up {
+    to {
+        opacity: 0;
+        transform: translateY(-60px);
+    }
+}
+@keyframes float-up-critical {
+    to {
+        opacity: 0;
+        transform: translateY(-80px) scale(1.2);
+    }
+}
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 1px rgba(255, 215, 0, 0.7);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 13px rgba(255, 215, 0, 0.9);
+    }
+}
+@keyframes float-wobble {
+    0%,
+    100% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-5px) translateX(5px) rotate(2deg);
+    }
+    50% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+    }
+    75% {
+        transform: translateY(5px) translateX(-5px) rotate(-2deg);
+    }
+}
+
+.progress-bar-bg {
+    background-color: #374151;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 10px;
+}
+.progress-bar-fg {
+    background-color: #34d399;
+    height: 100%;
+    transition: width 0.5s ease-in-out;
+}
+.progress-bar-maxed {
+    background: repeating-linear-gradient(
+        45deg,
+        #34d399,
+        #34d399 10px,
+        #2ecc71 10px,
+        #2ecc71 20px
+    );
+}
+
+/* Стили для кнопки престижа */
+#prestige-button {
+    background: linear-gradient(45deg, #f9a8d4, #fde047);
+    color: #4a044e;
+    width: 180px !important;
+    min-width: 180px !important;
+    max-width: 180px !important;
+    height: auto !important;
+    min-height: 80px;
+    padding: 0.75rem !important;
+    margin-top: 1rem !important;
+    white-space: normal !important;
+    line-height: 1.3;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Стиль для текста статуса престижа */
+#prestige-button-status {
+    text-align: center;
+    line-height: 1.2;
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    white-space: normal;
+    word-break: break-word;
+    width: 100%;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    #prestige-button {
+        width: 160px !important;
+        min-width: 160px !important;
+        max-width: 160px !important;
+        font-size: 14px;
+        min-height: 70px;
+    }
+    
+    #prestige-button-status {
+        font-size: 0.75rem;
+    }
+}
+
+.prestige-button:disabled {
+    opacity: 0.5;
+    filter: grayscale(100%);
+    animation: none !important;
+}
+.prestige-button:not(:disabled):active {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+.prestige-upgrade-button {
+    background: linear-gradient(45deg, #60a5fa, #3b82f6);
+    color: #1e3a8a;
+}
+.prestige-upgrade-button:disabled {
+    background-color: #4b5563;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+.prestige-upgrade-button.affordable {
+    animation: pulse 1.5s infinite;
+    box-shadow: 0 0 15px rgba(96, 165, 250, 0.6);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.modal-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+.modal-content {
+    background: #1f2937;
+    border: 1px solid #4b5563;
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    max-width: 90%;
+    width: 400px;
+}
+.modal-overlay.visible .modal-content {
+    transform: scale(1);
+}
+
+#leaderboard-modal .modal-content {
+    width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+#leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+#leaderboard-list li {
+    background-color: #2d3748;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+#leaderboard-list li:nth-child(odd) {
+    background-color: #1a202c;
+}
+#leaderboard-list li .rank {
+    font-weight: bold;
+    color: #facc15;
+    width: 30px;
+    flex-shrink: 0;
+}
+#leaderboard-list li .name {
+    flex-grow: 1;
+    margin: 0 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#leaderboard-list li .score {
+    font-weight: bold;
+    color: #34d399;
+    flex-shrink: 0;
+}
+#leaderboard-list li.player-entry {
+    background-color: #4a5568;
+    border: 2px solid #facc15;
+}
+
+#toast-container {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.toast {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(-20px);
+    animation:
+        toast-fade-in 0.3s forwards,
+        toast-fade-out 0.3s 2.7s forwards;
+}
+@keyframes toast-fade-in {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes toast-fade-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1a202c;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: opacity 0.5s ease-out;
+}
+#preloader.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #facc15;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#upgrades-panel-container {
+    position: fixed;
+    bottom: 60px;
+    left: 0;
+    width: 100%;
+    max-height: calc(80vh - 60px);
+    transform: translateY(calc(100% + 60px));
+    transition: transform 0.3s ease-out;
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+#upgrades-panel-container.active {
+    transform: translateY(0);
+}
+
+#upgrades-panel-container aside {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+#bottom-menu-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    z-index: 950;
+    background-color: rgba(31, 41, 55, 0.8);
+    backdrop-filter: blur(5px);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #4b5563;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.bottom-menu-center-group {
+    display: flex;
+    gap: 1rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bottom-menu-right-group {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto;
+}
+
+#bottom-menu-bar button {
+    background-color: #3b82f6;
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+    transition:
+        background-color 0.2s,
+        transform 0.1s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+#bottom-menu-bar button:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+}
+
+#bottom-menu-bar button:active {
+    transform: translateY(0);
+}
+
+.disabled-menu-button {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #4b5563;
+    color: #9ca3af;
+    box-shadow: none;
+    pointer-events: none;
+}
+
+.icon-only-button {
+    background-color: rgba(31, 41, 55, 0.8);
+    backdrop-filter: blur(5px);
+    border: 1px solid #4b5563;
+    color: white;
+    padding: 0.75rem;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.icon-only-button:hover {
+    background-color: #4b5563;
+    transform: translateY(-2px);
+}
+
+.icon-only-button:active {
+    transform: translateY(0);
+}
+
+#settings-modal .modal-content {
+    width: 450px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+#settings-modal .control-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    background-color: #2d3748;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+}
+
+/* Стили для селектора языка */
+#language-selector {
+    background-color: #1f2937;
+    color: #ffffff;
+    border: 1px solid #4b5563;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+#language-selector:focus {
+    outline: none;
+    border-color: #facc15;
+    box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.5);
+}
+
+.action-button {
+    z-index: 10;
+    min-width: 180px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition:
+        transform 0.1s ease-out,
+        box-shadow 0.2s ease-out,
+        background-color 0.2s ease-out,
+        opacity 0.2s ease-out;
+}
+
+.action-button:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+.action-button:not(:disabled):active {
+    transform: translateY(0);
+}
+
+.action-button:disabled {
+    opacity: 0.5;
+    filter: grayscale(100%);
+    animation: none !important;
+}
+
+/* Анимация переключения языка */
+[data-translate] {
+    transition: opacity 0.3s ease;
+}
+
+/* Пульсация для активных кнопок */
+.pulsing {
+    animation: pulse 1.5s infinite !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.7) !important;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .upgrade-button {
+        min-width: 120px;
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .action-button {
+        height: 70px;
+        font-size: 16px;
+    }
+    
+    #central-content-wrapper {
+        transform: translateY(-50px);
+    }
+    
+    #bottom-menu-bar {
+        height: 50px;
+        padding: 0.5rem;
+    }
+    
+    .bottom-menu-center-group {
+        gap: 0.5rem;
+    }
+    
+    #bottom-menu-bar button {
+        padding: 0.5rem 0.75rem;
+        font-size: 14px;
+    }
+    
+    #prestige-button,
+    #ad-boost-button,
+    #daily-reward-button,
+    #timed-bonus-button {
+        min-width: 160px;
+        padding: 0.5rem;
+        font-size: 14px;
+        height: auto;
+    }
+}
+
+/* Контейнер для правых кнопок */
+.right-buttons-container {
+    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
+}
+
+/* Общие стили для всех кнопок в контейнере */
+.right-buttons-container .action-button {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Специфичные стили для кнопки престижа */
+#prestige-button {
+    height: auto;
+    min-height: 80px;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+/* Стиль для текста статуса престижа */
+#prestige-button-status {
+    text-align: center;
+    line-height: 1.2;
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    white-space: normal;
+    word-break: break-word;
+    width: 100%;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .right-buttons-container {
+        width: 160px;
+        min-width: 160px;
+        max-width: 160px;
+    }
+    
+    #prestige-button {
+        min-height: 70px;
+    }
+    
+    #prestige-button-status {
+        font-size: 0.75rem;
+    }
+}
