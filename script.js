@@ -2237,7 +2237,7 @@ function loadFromLocalStorageFallback() {
         const saveData = localStorage.getItem("evolutionClickerSave");
         const data = saveData ? JSON.parse(saveData) : {};
         console.log("Loaded from local storage.");
-        processLoadedData(data); 
+        processLoadedData(data);
     } catch (e) {
         console.error("Local Storage Load Error:", e);
     }
@@ -2254,11 +2254,7 @@ async function submitScoreToLeaderboard() {
             maxStage: evolutionStages[gameState.maxUnlockedStageIndex].name[gameState.language]
         };
 
-        await ysdk.leaderboards.setLeaderboardScore(
-            LEADERBOARD_NAME,
-            score,
-            JSON.stringify(extraData) 
-        );
+        await ysdk.leaderboards.setLeaderboardScore(LEADERBOARD_NAME, score, JSON.stringify(extraData));
     } catch (e) {
         console.error("Leaderboard submit error:", e);
     }
@@ -2272,9 +2268,9 @@ async function showLeaderboard() {
     }
 
     try {
-        elements["leaderboard-modal"].classList.add("visible"); 
-        elements["leaderboard-loading"].classList.remove("hidden"); 
-        elements["leaderboard-list"].innerHTML = ""; 
+        elements["leaderboard-modal"].classList.add("visible");
+        elements["leaderboard-loading"].classList.remove("hidden");
+        elements["leaderboard-list"].innerHTML = "";
 
         const entries = await ysdk.leaderboards.getLeaderboardEntries(LEADERBOARD_NAME, {
             quantityTop: 10, // Топ-10 записей

@@ -159,13 +159,7 @@ main {
     transition: width 0.5s ease-in-out;
 }
 .progress-bar-maxed {
-    background: repeating-linear-gradient(
-        45deg,
-        #34d399,
-        #34d399 10px,
-        #2ecc71 10px,
-        #2ecc71 20px
-    );
+    background: repeating-linear-gradient(45deg, #34d399, #34d399 10px, #2ecc71 10px, #2ecc71 20px);
 }
 
 /* Стили для кнопки престижа */
@@ -209,7 +203,7 @@ main {
         font-size: 14px;
         min-height: 70px;
     }
-    
+
     #prestige-button-status {
         font-size: 0.75rem;
     }
@@ -504,7 +498,9 @@ main {
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.2s, transform 0.1s;
+    transition:
+        background-color 0.2s,
+        transform 0.1s;
 }
 
 .icon-only-button:hover {
@@ -603,30 +599,30 @@ main {
         padding: 10px;
         font-size: 14px;
     }
-    
+
     .action-button {
         height: 70px;
         font-size: 16px;
     }
-    
+
     #central-content-wrapper {
         transform: translateY(-50px);
     }
-    
+
     #bottom-menu-bar {
         height: 50px;
         padding: 0.5rem;
     }
-    
+
     .bottom-menu-center-group {
         gap: 0.5rem;
     }
-    
+
     #bottom-menu-bar button {
         padding: 0.5rem 0.75rem;
         font-size: 14px;
     }
-    
+
     #prestige-button,
     #ad-boost-button,
     #daily-reward-button,
@@ -686,11 +682,11 @@ main {
         min-width: 160px;
         max-width: 160px;
     }
-    
+
     #prestige-button {
         min-height: 70px;
     }
-    
+
     #prestige-button-status {
         font-size: 0.75rem;
     }

@@ -24,12 +24,12 @@
                 <source src="assets/video/stage1.mp4" type="video/mp4" />
             </video>
         </div>
-        
+
         <!-- Top Controls -->
         <div id="top-left-controls" class="absolute top-4 left-4 z-30">
-             <button id="open-settings-menu" class="icon-only-button">⚙️</button>
+            <button id="open-settings-menu" class="icon-only-button">⚙️</button>
         </div>
-        
+
         <div id="top-center-info" class="absolute top-4 left-1/2 -translate-x-1/2 z-20">
             <div id="boost-timer-display" class="text-lg font-bold text-green-400 hidden">
                 <span data-translate="boost_timer_label">x2 Бонус</span>: <span id="boost-timer"></span>
@@ -51,26 +51,38 @@
                     <span data-translate="prestige_points_label">Очки престижа</span>:
                     <span id="prestige-points">0</span>
                 </p>
-                
+
                 <!-- Buttons Container -->
                 <div class="right-buttons-container flex flex-col gap-4 mt-4">
-                    <button id="prestige-button" class="action-button rounded-lg shadow-lg text-base font-bold prestige-button" disabled>
+                    <button
+                        id="prestige-button"
+                        class="action-button rounded-lg shadow-lg text-base font-bold prestige-button"
+                        disabled>
                         ✨ <span data-translate="prestige_button_text">Престиж</span>
-                        <div id="prestige-button-status" class="text-sm mt-1" data-translate-dynamic="prestige_status_default">
-                            Нужен этап<br>'Мультивселенная'
+                        <div
+                            id="prestige-button-status"
+                            class="text-sm mt-1"
+                            data-translate-dynamic="prestige_status_default">
+                            Нужен этап<br />'Мультивселенная'
                         </div>
                     </button>
-                    
-                    <button id="ad-boost-button" class="action-button bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-lg text-base">
+
+                    <button
+                        id="ad-boost-button"
+                        class="action-button bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-lg text-base">
                         📺 <span data-translate="ad_boost_button_text">Рекламный Бонус</span>
                         <p class="text-sm mt-1" id="ad-boost-cooldown-text"></p>
                     </button>
-                    
-                    <button id="daily-reward-button" class="action-button bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 rounded-lg shadow-lg hidden">
+
+                    <button
+                        id="daily-reward-button"
+                        class="action-button bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-3 rounded-lg shadow-lg hidden">
                         🎁 <span data-translate="daily_reward_button_text">Ежедневная Награда</span>
                     </button>
-                    
-                    <button id="timed-bonus-button" class="action-button bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg shadow-lg text-base hidden">
+
+                    <button
+                        id="timed-bonus-button"
+                        class="action-button bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg shadow-lg text-base hidden">
                         ⏰ <span data-translate="timed_bonus_button_text">Временный Бонус</span>
                         <p class="text-sm mt-1" id="timed-bonus-cooldown-text"></p>
                     </button>
@@ -86,7 +98,10 @@
                     <p class="text-sm text-gray-500 mt-1" id="energy-per-second">0 энергии/сек</p>
                 </div>
                 <div class="w-full max-w-md mx-auto my-3">
-                    <p id="progress-label" class="text-center text-sm mb-1" data-translate-dynamic="progress_label_default">
+                    <p
+                        id="progress-label"
+                        class="text-center text-sm mb-1"
+                        data-translate-dynamic="progress_label_default">
                         Прогресс до следующего этапа
                     </p>
                     <div class="progress-bar-bg">
@@ -94,7 +109,9 @@
                     </div>
                 </div>
                 <div id="main-object-container" class="mb-4">
-                    <div id="main-object" class="main-object w-40 h-40 md:w-52 md:h-52 cursor-pointer flex items-center justify-center bg-gray-700 rounded-full shadow-lg">
+                    <div
+                        id="main-object"
+                        class="main-object w-40 h-40 md:w-52 md:h-52 cursor-pointer flex items-center justify-center bg-gray-700 rounded-full shadow-lg">
                         <span id="object-emoji" class="text-6xl md:text-7xl">⚛️</span>
                     </div>
                 </div>
@@ -105,51 +122,142 @@
         <!-- Upgrades Panel -->
         <div id="upgrades-panel-container">
             <aside class="w-full bg-gray-800/50 backdrop-blur-sm p-4 rounded-t-2xl">
-                <button id="close-upgrades-panel" class="absolute top-2 right-2 text-gray-400 hover:text-white text-3xl font-bold z-50">&times;</button>
-                
+                <button
+                    id="close-upgrades-panel"
+                    class="absolute top-2 right-2 text-gray-400 hover:text-white text-3xl font-bold z-50">
+                    &times;
+                </button>
+
                 <!-- Upgrades Buttons - Centered -->
                 <div class="upgrade-buttons-container flex flex-nowrap justify-center gap-3 p-4 mx-auto">
-                    <button id="upgrade-click" class="upgrade-button bg-blue-600 p-3 rounded-lg shadow-md text-left flex-shrink-0">
-                        <p class="font-bold"><span data-translate="upgrade_click_name">Сила Клика</span> (Ур. <span id="click-level">1</span>)</p>
-                        <p class="text-sm"><span data-translate="energy_per_click_label">Энергии/клик</span>: <span id="click-power-display">1</span></p>
-                        <p class="text-sm mt-1"><span data-translate="price_label">Цена</span>: <span id="click-cost">10</span></p>
+                    <button
+                        id="upgrade-click"
+                        class="upgrade-button bg-blue-600 p-3 rounded-lg shadow-md text-left flex-shrink-0">
+                        <p class="font-bold">
+                            <span data-translate="upgrade_click_name">Сила Клика</span> (Ур.
+                            <span id="click-level">1</span>)
+                        </p>
+                        <p class="text-sm">
+                            <span data-translate="energy_per_click_label">Энергии/клик</span>:
+                            <span id="click-power-display">1</span>
+                        </p>
+                        <p class="text-sm mt-1">
+                            <span data-translate="price_label">Цена</span>: <span id="click-cost">10</span>
+                        </p>
                     </button>
-                    <button id="upgrade-auto" class="upgrade-button bg-purple-600 p-3 rounded-lg shadow-md text-left flex-shrink-0">
-                        <p class="font-bold"><span data-translate="upgrade_auto_name">Синтез</span> (Ур. <span id="auto-level">0</span>)</p>
-                        <p class="text-sm"><span data-translate="energy_per_sec_label">Энергии/сек</span>: <span id="auto-power-display">0</span></p>
-                        <p class="text-sm mt-1"><span data-translate="price_label">Цена</span>: <span id="auto-cost">50</span></p>
+                    <button
+                        id="upgrade-auto"
+                        class="upgrade-button bg-purple-600 p-3 rounded-lg shadow-md text-left flex-shrink-0">
+                        <p class="font-bold">
+                            <span data-translate="upgrade_auto_name">Синтез</span> (Ур. <span id="auto-level">0</span>)
+                        </p>
+                        <p class="text-sm">
+                            <span data-translate="energy_per_sec_label">Энергии/сек</span>:
+                            <span id="auto-power-display">0</span>
+                        </p>
+                        <p class="text-sm mt-1">
+                            <span data-translate="price_label">Цена</span>: <span id="auto-cost">50</span>
+                        </p>
                     </button>
-                    <button id="upgrade-critical" class="upgrade-button bg-red-600 p-3 rounded-lg shadow-md text-left flex-shrink-0">
-                        <p class="font-bold"><span data-translate="upgrade_crit_name">Крит. Клик</span> (Ур. <span id="critical-level">0</span>)</p>
-                        <p class="text-sm"><span data-translate="chance_label">Шанс</span>: <span id="critical-chance-display">0</span>%</p>
-                        <p class="text-sm"><span data-translate="multiplier_label">Множитель</span>: x<span id="critical-multiplier-display">1</span></p>
-                        <p class="text-sm mt-1"><span data-translate="price_label">Цена</span>: <span id="critical-cost">1000</span></p>
+                    <button
+                        id="upgrade-critical"
+                        class="upgrade-button bg-red-600 p-3 rounded-lg shadow-md text-left flex-shrink-0">
+                        <p class="font-bold">
+                            <span data-translate="upgrade_crit_name">Крит. Клик</span> (Ур.
+                            <span id="critical-level">0</span>)
+                        </p>
+                        <p class="text-sm">
+                            <span data-translate="chance_label">Шанс</span>:
+                            <span id="critical-chance-display">0</span>%
+                        </p>
+                        <p class="text-sm">
+                            <span data-translate="multiplier_label">Множитель</span>: x<span
+                                id="critical-multiplier-display"
+                                >1</span
+                            >
+                        </p>
+                        <p class="text-sm mt-1">
+                            <span data-translate="price_label">Цена</span>: <span id="critical-cost">1000</span>
+                        </p>
                     </button>
-                    <button id="upgrade-autoclick" class="upgrade-button bg-yellow-600 p-3 rounded-lg shadow-md text-left flex-shrink-0">
-                        <p class="font-bold"><span data-translate="upgrade_autoclick_name">Авто-Клик</span> (Ур. <span id="autoclick-level">0</span>)</p>
-                        <p class="text-sm"><span data-translate="clicks_per_sec_label">Кликов/сек</span>: <span id="autoclick-rate-display">0</span></p>
-                        <p class="text-sm mt-1"><span data-translate="price_label">Цена</span>: <span id="autoclick-cost">5000</span></p>
+                    <button
+                        id="upgrade-autoclick"
+                        class="upgrade-button bg-yellow-600 p-3 rounded-lg shadow-md text-left flex-shrink-0">
+                        <p class="font-bold">
+                            <span data-translate="upgrade_autoclick_name">Авто-Клик</span> (Ур.
+                            <span id="autoclick-level">0</span>)
+                        </p>
+                        <p class="text-sm">
+                            <span data-translate="clicks_per_sec_label">Кликов/сек</span>:
+                            <span id="autoclick-rate-display">0</span>
+                        </p>
+                        <p class="text-sm mt-1">
+                            <span data-translate="price_label">Цена</span>: <span id="autoclick-cost">5000</span>
+                        </p>
                     </button>
                 </div>
-                
+
                 <!-- Prestige Upgrades - Centered -->
                 <div class="mt-6">
-                    <h2 class="text-xl font-bold text-yellow-300 mb-3 text-center" data-translate="prestige_upgrades_title">Улучшения Престижа</h2>
+                    <h2
+                        class="text-xl font-bold text-yellow-300 mb-3 text-center"
+                        data-translate="prestige_upgrades_title">
+                        Улучшения Престижа
+                    </h2>
                     <div class="prestige-upgrade-buttons-container flex flex-nowrap justify-center gap-3 p-4 mx-auto">
-                        <button id="prestige-upgrade-click-power" class="upgrade-button prestige-upgrade-button p-3 rounded-lg shadow-md text-left flex-shrink-0">
-                            <p class="font-bold"><span data-translate="prestige_upg_click_name">Мастер Клика</span> (Ур. <span id="prestige-click-level">0</span>)</p>
-                            <p class="text-sm"><span data-translate="click_bonus_label">Бонус к клику</span>: +<span id="prestige-click-bonus">0</span>%</p>
-                            <p class="text-sm mt-1"><span data-translate="price_label">Цена</span>: <span id="prestige-click-cost">1</span> <span data-translate="pp_unit">ОП</span></p>
+                        <button
+                            id="prestige-upgrade-click-power"
+                            class="upgrade-button prestige-upgrade-button p-3 rounded-lg shadow-md text-left flex-shrink-0">
+                            <p class="font-bold">
+                                <span data-translate="prestige_upg_click_name">Мастер Клика</span> (Ур.
+                                <span id="prestige-click-level">0</span>)
+                            </p>
+                            <p class="text-sm">
+                                <span data-translate="click_bonus_label">Бонус к клику</span>: +<span
+                                    id="prestige-click-bonus"
+                                    >0</span
+                                >%
+                            </p>
+                            <p class="text-sm mt-1">
+                                <span data-translate="price_label">Цена</span>: <span id="prestige-click-cost">1</span>
+                                <span data-translate="pp_unit">ОП</span>
+                            </p>
                         </button>
-                        <button id="prestige-upgrade-auto-power" class="upgrade-button prestige-upgrade-button p-3 rounded-lg shadow-md text-left flex-shrink-0">
-                            <p class="font-bold"><span data-translate="prestige_upg_auto_name">Эффективный Синтез</span> (Ур. <span id="prestige-auto-level">0</span>)</p>
-                            <p class="text-sm"><span data-translate="synthesis_bonus_label">Бонус к синтезу</span>: +<span id="prestige-auto-bonus">0</span>%</p>
-                            <p class="text-sm mt-1"><span data-translate="price_label">Цена</span>: <span id="prestige-auto-cost">1</span> <span data-translate="pp_unit">ОП</span></p>
+                        <button
+                            id="prestige-upgrade-auto-power"
+                            class="upgrade-button prestige-upgrade-button p-3 rounded-lg shadow-md text-left flex-shrink-0">
+                            <p class="font-bold">
+                                <span data-translate="prestige_upg_auto_name">Эффективный Синтез</span> (Ур.
+                                <span id="prestige-auto-level">0</span>)
+                            </p>
+                            <p class="text-sm">
+                                <span data-translate="synthesis_bonus_label">Бонус к синтезу</span>: +<span
+                                    id="prestige-auto-bonus"
+                                    >0</span
+                                >%
+                            </p>
+                            <p class="text-sm mt-1">
+                                <span data-translate="price_label">Цена</span>: <span id="prestige-auto-cost">1</span>
+                                <span data-translate="pp_unit">ОП</span>
+                            </p>
                         </button>
-                        <button id="prestige-upgrade-prestige-bonus" class="upgrade-button prestige-upgrade-button p-3 rounded-lg shadow-md text-left flex-shrink-0">
-                            <p class="font-bold"><span data-translate="prestige_upg_bonus_name">Глубокие Знания</span> (Ур. <span id="prestige-bonus-level">0</span>)</p>
-                            <p class="text-sm"><span data-translate="prestige_bonus_label_2">Бонус престижа</span>: +<span id="prestige-total-bonus">0</span>%</p>
-                            <p class="text-sm mt-1"><span data-translate="price_label">Цена</span>: <span id="prestige-bonus-cost">2</span> <span data-translate="pp_unit">ОП</span></p>
+                        <button
+                            id="prestige-upgrade-prestige-bonus"
+                            class="upgrade-button prestige-upgrade-button p-3 rounded-lg shadow-md text-left flex-shrink-0">
+                            <p class="font-bold">
+                                <span data-translate="prestige_upg_bonus_name">Глубокие Знания</span> (Ур.
+                                <span id="prestige-bonus-level">0</span>)
+                            </p>
+                            <p class="text-sm">
+                                <span data-translate="prestige_bonus_label_2">Бонус престижа</span>: +<span
+                                    id="prestige-total-bonus"
+                                    >0</span
+                                >%
+                            </p>
+                            <p class="text-sm mt-1">
+                                <span data-translate="price_label">Цена</span>: <span id="prestige-bonus-cost">2</span>
+                                <span data-translate="pp_unit">ОП</span>
+                            </p>
                         </button>
                     </div>
                 </div>
@@ -161,7 +269,9 @@
             <div class="bottom-menu-center-group">
                 <button id="open-upgrades-menu">🛠️ <span data-translate="menu_upgrades">Улучшения</span></button>
                 <button id="open-skills-tree-menu" class="disabled-menu-button" disabled>
-                    🌳 <span data-translate="menu_skills_tree">Древо навыков</span> (<span data-translate="soon">скоро</span>)
+                    🌳 <span data-translate="menu_skills_tree">Древо навыков</span> (<span data-translate="soon"
+                        >скоро</span
+                    >)
                 </button>
                 <button id="open-relics-menu" class="disabled-menu-button" disabled>
                     💎 <span data-translate="menu_relics">Реликвии</span> (<span data-translate="soon">скоро</span>)
@@ -172,10 +282,15 @@
         <!-- Leaderboard Modal -->
         <div id="leaderboard-modal" class="modal-overlay">
             <div class="modal-content">
-                <h3 class="text-2xl font-bold mb-4 text-yellow-300" data-translate="leaderboard_title">Таблица Лидеров</h3>
+                <h3 class="text-2xl font-bold mb-4 text-yellow-300" data-translate="leaderboard_title">
+                    Таблица Лидеров
+                </h3>
                 <div id="leaderboard-loading" class="text-gray-400 mb-4" data-translate="loading">Загрузка...</div>
                 <ul id="leaderboard-list" class="mb-4"></ul>
-                <button id="close-leaderboard-button" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg" data-translate="close_button">
+                <button
+                    id="close-leaderboard-button"
+                    class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg"
+                    data-translate="close_button">
                     Закрыть
                 </button>
             </div>
@@ -184,15 +299,24 @@
         <!-- Prestige Modal -->
         <div id="prestige-modal" class="modal-overlay">
             <div class="modal-content">
-                <h3 class="text-2xl font-bold mb-4 text-yellow-300" data-translate="prestige_confirm_title">Подтверждение Престижа</h3>
+                <h3 class="text-2xl font-bold mb-4 text-yellow-300" data-translate="prestige_confirm_title">
+                    Подтверждение Престижа
+                </h3>
                 <p class="mb-6" data-translate="prestige_confirm_text">
-                    Вы уверены? Ваш прогресс (энергия, улучшения) будет сброшен, но вы получите постоянный бонус к доходу!
+                    Вы уверены? Ваш прогресс (энергия, улучшения) будет сброшен, но вы получите постоянный бонус к
+                    доходу!
                 </p>
                 <div class="flex justify-center gap-4">
-                    <button id="confirm-prestige-button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg" data-translate="prestige_confirm_yes">
+                    <button
+                        id="confirm-prestige-button"
+                        class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg"
+                        data-translate="prestige_confirm_yes">
                         Да, я готов!
                     </button>
-                    <button id="cancel-prestige-button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg" data-translate="prestige_confirm_no">
+                    <button
+                        id="cancel-prestige-button"
+                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg"
+                        data-translate="prestige_confirm_no">
                         Нет, отмена
                     </button>
                 </div>
@@ -205,14 +329,18 @@
                 <h3 class="text-2xl font-bold mb-4 text-yellow-300" data-translate="settings_title">Настройки</h3>
                 <div class="control-group">
                     <label class="text-lg font-semibold" data-translate="settings_music">Музыка</label>
-                    <button id="music-toggle-button" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-3 rounded-lg shadow-lg">
+                    <button
+                        id="music-toggle-button"
+                        class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-3 rounded-lg shadow-lg">
                         🎵 Музыка Вкл
                     </button>
                     <input type="range" id="music-volume-slider" min="0" max="1" step="0.05" value="0.5" class="w-24" />
                 </div>
                 <div class="control-group">
                     <label class="text-lg font-semibold" data-translate="settings_sfx">Звуки</label>
-                    <button id="sfx-toggle-button" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-3 rounded-lg shadow-lg">
+                    <button
+                        id="sfx-toggle-button"
+                        class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-3 rounded-lg shadow-lg">
                         🔊 Звуки Вкл
                     </button>
                     <input type="range" id="sfx-volume-slider" min="0" max="1" step="0.05" value="0.75" class="w-24" />
@@ -223,16 +351,23 @@
                         <!-- Опции будут добавлены через JS -->
                     </select>
                 </div>
-                
-                <button id="open-leaderboard-button" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg w-full">
+
+                <button
+                    id="open-leaderboard-button"
+                    class="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg w-full">
                     🏆 <span data-translate="leaderboard_title">Таблица Лидеров</span>
                 </button>
-                
-                <button id="reset-progress-button" class="mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg hidden w-full">
+
+                <button
+                    id="reset-progress-button"
+                    class="mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg hidden w-full">
                     <span data-translate="settings_reset_progress">Сбросить Прогресс</span>
                 </button>
 
-                <button id="close-settings-button" class="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg w-full" data-translate="close_button">
+                <button
+                    id="close-settings-button"
+                    class="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg w-full"
+                    data-translate="close_button">
                     Закрыть
                 </button>
             </div>
@@ -241,19 +376,29 @@
         <!-- Offline Bonus Modal -->
         <div id="offline-bonus-modal" class="modal-overlay">
             <div class="modal-content">
-                <h3 class="text-2xl font-bold mb-4 text-yellow-300" data-translate="offline_title">Оффлайн Прогресс!</h3>
+                <h3 class="text-2xl font-bold mb-4 text-yellow-300" data-translate="offline_title">
+                    Оффлайн Прогресс!
+                </h3>
                 <p class="mb-4 text-lg">
-                    <span data-translate="offline_away_for">Вы отсутствовали</span>: <span id="offline-time-display" class="font-semibold text-green-400"></span>
+                    <span data-translate="offline_away_for">Вы отсутствовали</span>:
+                    <span id="offline-time-display" class="font-semibold text-green-400"></span>
                 </p>
                 <p class="mb-6 text-xl">
-                    <span data-translate="offline_earned">Заработано</span>: <span id="offline-energy-display" class="font-bold text-yellow-300"></span>
+                    <span data-translate="offline_earned">Заработано</span>:
+                    <span id="offline-energy-display" class="font-bold text-yellow-300"></span>
                     <span data-translate="energy_unit_label">энергии</span>
                 </p>
                 <div class="flex flex-col gap-4">
-                    <button id="claim-offline-button" class="action-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg text-lg w-full" data-translate="offline_claim">
+                    <button
+                        id="claim-offline-button"
+                        class="action-button bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg text-lg w-full"
+                        data-translate="offline_claim">
                         Забрать
                     </button>
-                    <button id="double-offline-button" class="action-button bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg text-lg w-full" data-translate="offline_claim_double">
+                    <button
+                        id="double-offline-button"
+                        class="action-button bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg text-lg w-full"
+                        data-translate="offline_claim_double">
                         Удвоить за рекламу 📺
                     </button>
                 </div>
