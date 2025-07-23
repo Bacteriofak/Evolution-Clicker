@@ -11,7 +11,7 @@ let sfxGainNode;
 let isMusicPlaying = false;
 const elements = {};
 const LEADERBOARD_NAME = "prestige_level_leaderboard";
-const GAME_VERSION = "2.83";
+const GAME_VERSION = "3.14";
 const AD_BOOST_COOLDOWN_MS = 5 * 60 * 1000;
 const TIMED_BONUS_COOLDOWN_MS = 10 * 60 * 1000;
 const TIMED_BONUS_DURATION_MS = 60 * 1000;
