@@ -1,8 +1,6 @@
 // --- GLOBAL VARS ---
 let ysdk;
 let player;
-let gamePush;
-const GAMEPUSH_CONFIG = { appId: 'YOUR_GAMEPUSH_APP_ID', enabled: true };
 let gameState; // Объявляется здесь, инициализируется позже
 let boostEndTime = 0;
 let audioCtx;
@@ -13,7 +11,7 @@ let sfxGainNode;
 let isMusicPlaying = false;
 const elements = {};
 const LEADERBOARD_NAME = "prestige_level_leaderboard";
-const GAME_VERSION = "4.0";
+const GAME_VERSION = "3.14";
 const AD_BOOST_COOLDOWN_MS = 5 * 60 * 1000;
 const TIMED_BONUS_COOLDOWN_MS = 10 * 60 * 1000;
 const TIMED_BONUS_DURATION_MS = 60 * 1000;
@@ -111,7 +109,6 @@ const translations = {
         toast_eff_synthesis_up: "Efficient Synthesis Lvl. {level}!",
         toast_deep_knowledge_up: "Deep Knowledge Lvl. {level}!",
         toast_prestige_done: "Prestige! Level {level}! Gained 1 prestige point!",
-        toast_prestige_done_v2: "Prestige! Level {level}! Earned {points} PP (Total: {total})",
         toast_need_stage_for_prestige: "You need to reach stage '{stageName}' to prestige.",
         toast_ad_before_prestige: "Showing ad before prestige...",
         toast_ad_closed: "Prestige ad closed. Resetting progress.",
@@ -237,7 +234,6 @@ const translations = {
         toast_eff_synthesis_up: "Эффективный Синтез Ур. {level}!",
         toast_deep_knowledge_up: "Глубокие Знания Ур. {level}!",
         toast_prestige_done: "Престиж! Уровень {level}! Получено 1 очко престижа!",
-        toast_prestige_done_v2: "Престиж! Уровень {level}! Получено {points} ОП (Всего: {total})",
         toast_need_stage_for_prestige: "Нужно достичь этапа '{stageName}' для престижа.",
         toast_ad_before_prestige: "Показ рекламы перед престижем...",
         toast_ad_closed: "Реклама престижа закрыта. Прогресс будет сброшен.",
@@ -327,11 +323,7 @@ function createDefaultGameState() {
         isMusicEnabled: true,
         sfxVolume: 0.75,
         isSfxEnabled: true,
-        language: "ru",
-        // Skills Tree - purchased skills
-        purchasedSkills: [],
-        // Relics - owned relics
-        ownedRelics: []
+        language: "ru"
     };
 }
 
@@ -427,130 +419,6 @@ const evolutionStages = [
         imageUrl: "assets/images/stage13.png",
         videoUrl: "assets/video/stage13.mp4",
         fallbackImage: "url('https://placehold.co/1920x1080/333333/FFFFFF?text=STAGE+13%0AAbsolute+Being')"
-    }
-];
-
-// --- SKILLS TREE DATA ---
-const skillsTreeData = [
-    {
-        id: "skill_click_boost",
-        name: { ru: "Мастерство Клика", en: "Click Mastery" },
-        description: { 
-            ru: "Увеличивает силу клика на 50% постоянно", 
-            en: "Permanently increases click power by 50%" 
-        },
-        cost: 5,
-        effect: { type: "clickMultiplier", value: 1.5 },
-        requires: [],
-        icon: "⚡"
-    },
-    {
-        id: "skill_synthesis_boost",
-        name: { ru: "Эффективный Синтез", en: "Efficient Synthesis" },
-        description: { 
-            ru: "Увеличивает пассивный доход на 50% постоянно", 
-            en: "Permanently increases passive income by 50%" 
-        },
-        cost: 5,
-        effect: { type: "autoMultiplier", value: 1.5 },
-        requires: [],
-        icon: "⚙️"
-    },
-    {
-        id: "skill_crit_mastery",
-        name: { ru: "Критический Удар", en: "Critical Strike" },
-        description: { 
-            ru: "Увеличивает шанс крита на 5% и множитель на 0.5x", 
-            en: "Increases crit chance by 5% and multiplier by 0.5x" 
-        },
-        cost: 8,
-        effect: { type: "critBoost", chance: 0.05, multiplier: 0.5 },
-        requires: ["skill_click_boost"],
-        icon: "🎯"
-    },
-    {
-        id: "skill_prestige_bonus",
-        name: { ru: "Наследие Предков", en: "Ancestral Legacy" },
-        description: { 
-            ru: "Увеличивает бонус престижа на 25%", 
-            en: "Increases prestige bonus by 25%" 
-        },
-        cost: 10,
-        effect: { type: "prestigeMultiplier", value: 1.25 },
-        requires: ["skill_synthesis_boost"],
-        icon: "🏆"
-    },
-    {
-        id: "skill_omnipotence",
-        name: { ru: "Всемогущество", en: "Omnipotence" },
-        description: { 
-            ru: "Все бонусы x2 (требует все предыдущие навыки)", 
-            en: "All bonuses x2 (requires all previous skills)" 
-        },
-        cost: 25,
-        effect: { type: "globalMultiplier", value: 2.0 },
-        requires: ["skill_crit_mastery", "skill_prestige_bonus"],
-        icon: "👑"
-    }
-];
-
-// --- RELICS DATA ---
-const relicsData = [
-    {
-        id: "relic_quantum_crystal",
-        name: { ru: "Квантовый Кристалл", en: "Quantum Crystal" },
-        description: { 
-            ru: "+100% к энергии за клик", 
-            en: "+100% energy per click" 
-        },
-        cost: 10,
-        effect: { type: "clickBonus", value: 2.0 },
-        icon: "💎"
-    },
-    {
-        id: "relic_stellar_core",
-        name: { ru: "Звёздное Ядро", en: "Stellar Core" },
-        description: { 
-            ru: "+100% к пассивному доходу", 
-            en: "+100% passive income" 
-        },
-        cost: 10,
-        effect: { type: "autoBonus", value: 2.0 },
-        icon: "⭐"
-    },
-    {
-        id: "relic_time_fragment",
-        name: { ru: "Осколок Времени", en: "Time Fragment" },
-        description: { 
-            ru: "Авто-клики работают в 2 раза быстрее", 
-            en: "Auto-clicks work 2x faster" 
-        },
-        cost: 15,
-        effect: { type: "autoclickSpeed", value: 2.0 },
-        icon: "⏳"
-    },
-    {
-        id: "relic_multiverse_key",
-        name: { ru: "Ключ Мультивселенной", en: "Multiverse Key" },
-        description: { 
-            ru: "Удваивает очки престижа при сбросе", 
-            en: "Doubles prestige points on reset" 
-        },
-        cost: 20,
-        effect: { type: "prestigeDouble", value: 2.0 },
-        icon: "🔑"
-    },
-    {
-        id: "relic_evolution_essence",
-        name: { ru: "Сущность Эволюции", en: "Evolution Essence" },
-        description: { 
-            ru: "Все бонусы +50% (требует все предыдущие реликвии)", 
-            en: "All bonuses +50% (requires all previous relics)" 
-        },
-        cost: 50,
-        effect: { type: "globalBonus", value: 1.5 },
-        requires: ["relic_quantum_crystal", "relic_stellar_core", "relic_time_fragment", "relic_multiverse_key"],
-        icon: "🧬"
     }
 ];
 
@@ -881,34 +749,6 @@ function gameTick() {
 
     // Рассчитываем прирост энергии в секунду
     let energyPerSec = gameState.autoPower * (1 + 0.1 * gameState.prestigeAutoLevel);
-    
-    // Применяем множители от навыков
-    if (gameState.purchasedSkills) {
-        for (const skillId of gameState.purchasedSkills) {
-            const skill = skillsTreeData.find(s => s.id === skillId);
-            if (skill && skill.effect) {
-                if (skill.effect.type === "autoMultiplier") {
-                    energyPerSec *= skill.effect.value;
-                } else if (skill.effect.type === "globalMultiplier") {
-                    energyPerSec *= skill.effect.value;
-                }
-            }
-        }
-    }
-    
-    // Применяем множители от реликвий
-    if (gameState.ownedRelics) {
-        for (const relicId of gameState.ownedRelics) {
-            const relic = relicsData.find(r => r.id === relicId);
-            if (relic && relic.effect) {
-                if (relic.effect.type === "autoBonus") {
-                    energyPerSec *= relic.effect.value;
-                } else if (relic.effect.type === "globalBonus") {
-                    energyPerSec *= relic.effect.value;
-                }
-            }
-        }
-    }
 
     // Применяем бонус x2, если активен
     if (Date.now() < boostEndTime) {
@@ -971,37 +811,7 @@ function performClick(e, isAuto) {
     if (!gameState) return;
 
     let clickPower = gameState.clickPower;
-    
-    // Применяем бонус престижа к силе клика
-    clickPower *= 1 + 0.1 * gameState.prestigeClickLevel;
-    
-    // Применяем множители от навыков
-    if (gameState.purchasedSkills) {
-        for (const skillId of gameState.purchasedSkills) {
-            const skill = skillsTreeData.find(s => s.id === skillId);
-            if (skill && skill.effect) {
-                if (skill.effect.type === "clickMultiplier") {
-                    clickPower *= skill.effect.value;
-                } else if (skill.effect.type === "globalMultiplier") {
-                    clickPower *= skill.effect.value;
-                }
-            }
-        }
-    }
-    
-    // Применяем множители от реликвий
-    if (gameState.ownedRelics) {
-        for (const relicId of gameState.ownedRelics) {
-            const relic = relicsData.find(r => r.id === relicId);
-            if (relic && relic.effect) {
-                if (relic.effect.type === "clickBonus") {
-                    clickPower *= relic.effect.value;
-                } else if (relic.effect.type === "globalBonus") {
-                    clickPower *= relic.effect.value;
-                }
-            }
-        }
-    }
+    clickPower *= 1 + 0.1 * gameState.prestigeClickLevel; // Применяем бонус престижа к силе клика
 
     let isCritical = false;
 
@@ -1240,27 +1050,13 @@ function executePrestigeLogic() {
     const newPrestigeLevel = gameState.prestigeLevel + 1;
     const oldState = { ...gameState }; // Копируем старое состояние
 
-    // НОВАЯ ФОРМУЛА: Расчет очков престижа на основе текущей энергии
-    const basePoints = Math.max(1, Math.floor(Math.sqrt(gameState.energy / 1000000)));
-    
-    // Множитель от реликвии "Ключ Мультивселенной"
-    let multiplier = 1.0;
-    if (gameState.ownedRelics && gameState.ownedRelics.includes("relic_multiverse_key")) {
-        multiplier *= 2.0;
-    }
-    
-    const earnedPrestigePoints = Math.floor(basePoints * multiplier);
-
     // Сбрасываем состояние игры, но сохраняем улучшения престижа и настройки
     gameState = createDefaultGameState();
     gameState.prestigeLevel = newPrestigeLevel;
-    gameState.prestigePoints = oldState.prestigePoints + earnedPrestigePoints;
+    gameState.prestigePoints = oldState.prestigePoints + 1;
     gameState.prestigeClickLevel = oldState.prestigeClickLevel;
     gameState.prestigeAutoLevel = oldState.prestigeAutoLevel;
     gameState.prestigeBonusLevel = oldState.prestigeBonusLevel;
-    // Сохраняем купленные навыки и реликвии
-    gameState.purchasedSkills = oldState.purchasedSkills || [];
-    gameState.ownedRelics = oldState.ownedRelics || [];
     // Открываем следующий этап для разблокировки
     gameState.maxUnlockedStageIndex = Math.min(evolutionStages.length - 1, oldState.maxUnlockedStageIndex + 1);
     gameState.musicVolume = oldState.musicVolume;
@@ -1271,15 +1067,7 @@ function executePrestigeLogic() {
 
     previousStageIndex = -1; // Сбрасываем индекс для принудительного обновления видеофона
     setLanguage(gameState.language); // Обновляем язык после сброса состояния
-    
-    // Сообщение о полученных очках престижа
-    const toastMsg = getLangText("toast_prestige_done_v2", { 
-        level: newPrestigeLevel, 
-        points: earnedPrestigePoints,
-        total: gameState.prestigePoints 
-    });
-    showToast(toastMsg, "success");
-    
+    showToast(getLangText("toast_prestige_done", { level: newPrestigeLevel }), "success");
     saveProgress(); // Сохраняем новый прогресс
     submitScoreToLeaderboard(); // Отправляем очки в таблицу лидеров
 }
