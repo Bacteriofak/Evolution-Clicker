@@ -9,6 +9,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://yandex.ru/games/sdk/v2"></script>
+        <script src="https://sdk.gamepush.com/gamepush.js"></script>
         <link rel="stylesheet" href="style.css" />
     </head>
     <body class="bg-gray-900 text-white overflow-hidden h-screen flex flex-col">
@@ -268,13 +269,11 @@
         <div id="bottom-menu-bar">
             <div class="bottom-menu-center-group">
                 <button id="open-upgrades-menu">🛠️ <span data-translate="menu_upgrades">Улучшения</span></button>
-                <button id="open-skills-tree-menu" class="disabled-menu-button" disabled>
-                    🌳 <span data-translate="menu_skills_tree">Древо навыков</span> (<span data-translate="soon"
-                        >скоро</span
-                    >)
+                <button id="open-skills-tree-menu">
+                    🌳 <span data-translate="menu_skills_tree">Древо навыков</span>
                 </button>
-                <button id="open-relics-menu" class="disabled-menu-button" disabled>
-                    💎 <span data-translate="menu_relics">Реликвии</span> (<span data-translate="soon">скоро</span>)
+                <button id="open-relics-menu">
+                    💎 <span data-translate="menu_relics">Реликвии</span>
                 </button>
             </div>
         </div>
@@ -373,6 +372,60 @@
             </div>
         </div>
 
+        <!-- Skills Tree Modal -->
+        <div id="skills-tree-modal" class="modal-overlay">
+            <div class="modal-content modal-content-large">
+                <h3 class="text-2xl font-bold mb-4 text-yellow-300" data-translate="menu_skills_tree">Древо навыков</h3>
+                <div id="skills-tree-container" class="skills-tree-container">
+                    <div class="skills-tree-info">
+                        <p class="text-gray-400 mb-4" data-translate="skills_tree_info">
+                            Тратьте очки престижа на открытие мощных навыков
+                        </p>
+                        <p class="text-yellow-300 mb-2">
+                            <span data-translate="prestige_points_label">Очки престижа</span>: 
+                            <span id="skills-pp-display">0</span>
+                        </p>
+                    </div>
+                    <div id="skills-list" class="skills-list">
+                        <!-- Навыки будут добавлены через JS -->
+                    </div>
+                </div>
+                <button
+                    id="close-skills-tree-button"
+                    class="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg w-full"
+                    data-translate="close_button">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+
+        <!-- Relics Modal -->
+        <div id="relics-modal" class="modal-overlay">
+            <div class="modal-content modal-content-large">
+                <h3 class="text-2xl font-bold mb-4 text-yellow-300" data-translate="menu_relics">Реликвии</h3>
+                <div id="relics-container" class="relics-container">
+                    <div class="relics-info">
+                        <p class="text-gray-400 mb-4" data-translate="relics_info">
+                            Уникальные артефакты с постоянными бонусами
+                        </p>
+                        <p class="text-yellow-300 mb-2">
+                            <span data-translate="prestige_points_label">Очки престижа</span>: 
+                            <span id="relics-pp-display">0</span>
+                        </p>
+                    </div>
+                    <div id="relics-list" class="relics-list">
+                        <!-- Реликвии будут добавлены через JS -->
+                    </div>
+                </div>
+                <button
+                    id="close-relics-button"
+                    class="mt-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg w-full"
+                    data-translate="close_button">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+
         <!-- Offline Bonus Modal -->
         <div id="offline-bonus-modal" class="modal-overlay">
             <div class="modal-content">
@@ -413,9 +466,10 @@
 
         <!-- Version Info -->
         <div class="absolute bottom-2 right-2 text-xs text-gray-600 z-50">
-            <span data-translate="version_label">Версия</span>: <span id="game-version">2.83</span>
+            <span data-translate="version_label">Версия</span>: <span id="game-version">4.0</span>
         </div>
 
+        <!-- GamePush SDK already loaded in head -->
         <script src="script.js"></script>
     </body>
 </html>
