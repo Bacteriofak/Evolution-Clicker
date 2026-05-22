@@ -160,7 +160,16 @@ const translations = {
         ad_boost_ready: "🎁 Watch",
         timed_bonus_cooldown: "In: {minutes} min",
         timed_bonus_ready: "Ready...",
-        timed_bonus_active: "Left: {seconds}s"
+        timed_bonus_active: "Left: {seconds}s",
+        skills_tree_info: "Spend prestige points to unlock powerful skills",
+        relics_info: "Unique artifacts with permanent bonuses",
+        skill_unlocked: "Skill Unlocked!",
+        skill_purchased: "Purchased: {skillName}",
+        relic_purchased: "Relic Acquired!",
+        relic_owned: "Already Owned",
+        skill_requires: "Requires: {skills}",
+        skill_cannot_afford: "Not enough prestige points!",
+        skill_missing_requirements: "Missing requirements!"
     },
     ru: {
         lang_name: "Русский",
@@ -280,7 +289,6 @@ const translations = {
         prestige_status_ready_new: "Готов! (Откроет новый этап)",
         prestige_status_ready_all: "Готов! (Все этапы открыты)",
         prestige_status_need_stage: "Нужен этап '{stageName}'",
-
         prestige_status_all_stages: "Достигните вершины всех этапов!",
         progress_label_max_reached: "Вы достигли вершины эволюции! Остальные уровни в разработке!",
         progress_label_max_unlocked:
@@ -289,7 +297,16 @@ const translations = {
         ad_boost_ready: "🎁 Смотреть",
         timed_bonus_cooldown: "Через: {minutes} мин",
         timed_bonus_ready: "Скоро...",
-        timed_bonus_active: "Осталось: {seconds}с"
+        timed_bonus_active: "Осталось: {seconds}с",
+        skills_tree_info: "Тратьте очки престижа на открытие мощных навыков",
+        relics_info: "Уникальные артефакты с постоянными бонусами",
+        skill_unlocked: "Навык разблокирован!",
+        skill_purchased: "Получено: {skillName}",
+        relic_purchased: "Реликвия получена!",
+        relic_owned: "Уже есть",
+        skill_requires: "Требует: {skills}",
+        skill_cannot_afford: "Недостаточно очков престижа!",
+        skill_missing_requirements: "Не выполнены требования!"
     }
 };
 
@@ -862,6 +879,30 @@ function initGameLogic() {
     if (elements["sfx-toggle-button"]) elements["sfx-toggle-button"].addEventListener("click", toggleSfx);
     if (elements["sfx-volume-slider"]) elements["sfx-volume-slider"].addEventListener("input", updateSfxVolume);
     if (elements["language-selector"]) elements["language-selector"].addEventListener("change", handleLanguageChange);
+
+    // Skills Tree & Relics modal buttons
+    if (elements["open-skills-tree-menu"]) {
+        elements["open-skills-tree-menu"].addEventListener("click", () => {
+            renderSkillsTree();
+            elements["skills-tree-modal"].classList.add("visible");
+        });
+    }
+    if (elements["close-skills-tree-button"]) {
+        elements["close-skills-tree-button"].addEventListener("click", () => {
+            elements["skills-tree-modal"].classList.remove("visible");
+        });
+    }
+    if (elements["open-relics-menu"]) {
+        elements["open-relics-menu"].addEventListener("click", () => {
+            renderRelics();
+            elements["relics-modal"].classList.add("visible");
+        });
+    }
+    if (elements["close-relics-button"]) {
+        elements["close-relics-button"].addEventListener("click", () => {
+            elements["relics-modal"].classList.remove("visible");
+        });
+    }
 
     initAudio(); // Инициализируем аудио
     loadBackgroundMusic(); // Загружаем фоновую музыку
@@ -2535,4 +2576,212 @@ async function showLeaderboard() {
         elements["leaderboard-list"].innerHTML =
             `<li class='text-center text-red-400'>${getLangText("leaderboard_error")}</li>`;
     }
+}
+
+// --- SKILLS TREE FUNCTIONS ---
+function renderSkillsTree() {
+    const container = document.getElementById("skills-list");
+    const ppDisplay = document.getElementById("skills-pp-display");
+    
+    if (!container || !ppDisplay) return;
+    
+    ppDisplay.textContent = gameState.prestigePoints;
+    container.innerHTML = "";
+    
+    skillsTreeData.forEach(skill => {
+        const isPurchased = gameState.purchasedSkills.includes(skill.id);
+        const canAfford = gameState.prestigePoints >= skill.cost;
+        
+        // Check requirements
+        let requirementsMet = true;
+        if (skill.requires && skill.requires.length > 0) {
+            requirementsMet = skill.requires.every(reqId => gameState.purchasedSkills.includes(reqId));
+        }
+        
+        const card = document.createElement("div");
+        card.className = `skill-card ${isPurchased ? 'purchased' : ''} ${!isPurchased && canAfford && requirementsMet ? 'available' : ''}`;
+        
+        const reqNames = skill.requires 
+            ? skill.requires.map(reqId => {
+                const reqSkill = skillsTreeData.find(s => s.id === reqId);
+                return reqSkill ? getLangText(reqSkill.name.ru) || reqSkill.name.en : reqId;
+            }).join(", ")
+            : "";
+        
+        card.innerHTML = `
+            <div class="skill-icon">${skill.icon}</div>
+            <div class="skill-info">
+                <h4 class="skill-name">${getLangText(skill.name.ru) || skill.name.en}</h4>
+                <p class="skill-description">${getLangText(skill.description.ru) || skill.description.en}</p>
+                ${skill.requires && skill.requires.length > 0 ? 
+                    `<p class="skill-requires">${getLangText("skill_requires", {skills: reqNames})}</p>` : 
+                    ''}
+                <div class="skill-cost">
+                    ${isPurchased ? 
+                        `<span class="owned-badge">✓ ${getLangText("relic_owned")}</span>` : 
+                        `<span class="cost-badge">${skill.cost} ${getLangText("pp_unit")}</span>`
+                    }
+                </div>
+            </div>
+            ${!isPurchased ? 
+                `<button class="purchase-btn" data-skill-id="${skill.id}" 
+                    ${!(canAfford && requirementsMet) ? 'disabled' : ''}>
+                    ${getLangText("skill_unlocked")}
+                </button>` : 
+                ''
+            }
+        `;
+        
+        container.appendChild(card);
+    });
+    
+    // Add click handlers
+    container.querySelectorAll(".purchase-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const skillId = btn.getAttribute("data-skill-id");
+            purchaseSkill(skillId);
+        });
+    });
+}
+
+function purchaseSkill(skillId) {
+    const skill = skillsTreeData.find(s => s.id === skillId);
+    if (!skill) return;
+    
+    // Already purchased
+    if (gameState.purchasedSkills.includes(skillId)) {
+        showToast(getLangText("relic_owned"), "info");
+        return;
+    }
+    
+    // Check cost
+    if (gameState.prestigePoints < skill.cost) {
+        showToast(getLangText("skill_cannot_afford"), "error");
+        return;
+    }
+    
+    // Check requirements
+    if (skill.requires && skill.requires.length > 0) {
+        const requirementsMet = skill.requires.every(reqId => gameState.purchasedSkills.includes(reqId));
+        if (!requirementsMet) {
+            showToast(getLangText("skill_missing_requirements"), "error");
+            return;
+        }
+    }
+    
+    // Purchase
+    gameState.prestigePoints -= skill.cost;
+    gameState.purchasedSkills.push(skillId);
+    
+    showToast(getLangText("skill_purchased", {skillName: getLangText(skill.name.ru) || skill.name.en}), "success");
+    
+    // Re-render and save
+    renderSkillsTree();
+    updateAllUI();
+    saveProgress();
+}
+
+// --- RELICS FUNCTIONS ---
+function renderRelics() {
+    const container = document.getElementById("relics-list");
+    const ppDisplay = document.getElementById("relics-pp-display");
+    
+    if (!container || !ppDisplay) return;
+    
+    ppDisplay.textContent = gameState.prestigePoints;
+    container.innerHTML = "";
+    
+    relicsData.forEach(relic => {
+        const isOwned = gameState.ownedRelics.includes(relic.id);
+        const canAfford = gameState.prestigePoints >= relic.cost;
+        
+        // Check requirements
+        let requirementsMet = true;
+        if (relic.requires && relic.requires.length > 0) {
+            requirementsMet = relic.requires.every(reqId => gameState.ownedRelics.includes(reqId));
+        }
+        
+        const card = document.createElement("div");
+        card.className = `relic-card ${isOwned ? 'owned' : ''} ${!isOwned && canAfford && requirementsMet ? 'available' : ''}`;
+        
+        const reqNames = relic.requires 
+            ? relic.requires.map(reqId => {
+                const reqRelic = relicsData.find(r => r.id === reqId);
+                return reqRelic ? getLangText(reqRelic.name.ru) || reqRelic.name.en : reqId;
+            }).join(", ")
+            : "";
+        
+        card.innerHTML = `
+            <div class="relic-icon">${relic.icon}</div>
+            <div class="relic-info">
+                <h4 class="relic-name">${getLangText(relic.name.ru) || relic.name.en}</h4>
+                <p class="relic-description">${getLangText(relic.description.ru) || relic.description.en}</p>
+                ${relic.requires && relic.requires.length > 0 ? 
+                    `<p class="relic-requires">${getLangText("skill_requires", {skills: reqNames})}</p>` : 
+                    ''}
+                <div class="relic-cost">
+                    ${isOwned ? 
+                        `<span class="owned-badge">✓ ${getLangText("relic_owned")}</span>` : 
+                        `<span class="cost-badge">${relic.cost} ${getLangText("pp_unit")}</span>`
+                    }
+                </div>
+            </div>
+            ${!isOwned ? 
+                `<button class="purchase-btn" data-relic-id="${relic.id}" 
+                    ${!(canAfford && requirementsMet) ? 'disabled' : ''}>
+                    ${getLangText("relic_purchased")}
+                </button>` : 
+                ''
+            }
+        `;
+        
+        container.appendChild(card);
+    });
+    
+    // Add click handlers
+    container.querySelectorAll(".purchase-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const relicId = btn.getAttribute("data-relic-id");
+            purchaseRelic(relicId);
+        });
+    });
+}
+
+function purchaseRelic(relicId) {
+    const relic = relicsData.find(r => r.id === relicId);
+    if (!relic) return;
+    
+    // Already owned
+    if (gameState.ownedRelics.includes(relicId)) {
+        showToast(getLangText("relic_owned"), "info");
+        return;
+    }
+    
+    // Check cost
+    if (gameState.prestigePoints < relic.cost) {
+        showToast(getLangText("skill_cannot_afford"), "error");
+        return;
+    }
+    
+    // Check requirements
+    if (relic.requires && relic.requires.length > 0) {
+        const requirementsMet = relic.requires.every(reqId => gameState.ownedRelics.includes(reqId));
+        if (!requirementsMet) {
+            showToast(getLangText("skill_missing_requirements"), "error");
+            return;
+        }
+    }
+    
+    // Purchase
+    gameState.prestigePoints -= relic.cost;
+    gameState.ownedRelics.push(relicId);
+    
+    showToast(getLangText("relic_purchased", {relicName: getLangText(relic.name.ru) || relic.name.en}), "success");
+    
+    // Re-render and save
+    renderRelics();
+    updateAllUI();
+    saveProgress();
+}
+
 }
